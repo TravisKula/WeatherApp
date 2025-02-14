@@ -62,4 +62,6 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata:1.7.6") //required to observe state (livedata library)
     implementation("io.coil-kt.coil3:coil-compose:3.0.4")  // add coil library
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.4")
+    implementation("androidx.compose.material3:material3:1.3.1")
+
 }

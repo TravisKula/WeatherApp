@@ -13,25 +13,26 @@ import com.example.weatherapp.network.WeatherModel
 import com.example.weatherapp.weatherui.WeatherScreen
 import kotlinx.coroutines.launch
 
-class WeatherViewModel :ViewModel() {
+// Fetches weather data from API using Retrofit
 
-    // instance of api to use in viewModel
-    private val apiService = RetrofitInstance.apiService
-    private val _weatherResult = MutableLiveData<NetworkResponse<WeatherModel>>() //WeatherModel is the Type of response
-    val weatherResult : LiveData<NetworkResponse<WeatherModel>> = _weatherResult
+class WeatherViewModel : ViewModel() {
 
-    fun getWeatherData(city: String) {
-       // Log.i("City name: ", city)  //used to logcat test if search info is passed to viewmodel
+    // Instance of api to use in viewModel
+    private val apiService = RetrofitInstance.apiService // Instance to call the weather API
+    private val _weatherResult = MutableLiveData<NetworkResponse<WeatherModel>>() // Holds the API response
+    val weatherResult : LiveData<NetworkResponse<WeatherModel>> = _weatherResult // Public variable that UI can observe
 
-        _weatherResult.value = NetworkResponse.Loading   //Response when loading
+    fun getWeatherData(city: String) { // Fetches API data based on City name
 
-        viewModelScope.launch {                        //wrap in coroutine b/c will take some time
+        _weatherResult.value = NetworkResponse.Loading // Response when loading (data being fetched)
+
+        viewModelScope.launch { // Wrap in coroutine b/c will take some time
             // response from the api call
             try {
-                val response = apiService.getWeather(Constant.apiKey, city) //passes API key to apiService object
+                val response = apiService.getWeather(Constant.apiKey, city) // Passes API key to apiService object
                 if(response.isSuccessful) {
                     response.body()?.let {
-                        _weatherResult.value = NetworkResponse.Success(it)  //response when successfull
+                        _weatherResult.value = NetworkResponse.Success(it) // Response when successful
                     }
 
                     //  Log.i("Response : ",response.body().toString())  //check before applying logic

@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
         //viewModelProvider ensure WeatherViewModel instance persists configuration changes
         setContent {
 
-            WeatherAppTheme {
+            WeatherAppTheme { // Wrap the entire app UI with theme
 
                 Surface(
                     modifier = Modifier.fillMaxSize(),
