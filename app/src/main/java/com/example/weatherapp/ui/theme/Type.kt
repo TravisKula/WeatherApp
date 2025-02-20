@@ -10,6 +10,7 @@ import com.example.weatherapp.R
 
 val RacingSansOne = FontFamily(Font(R.font.racing_sans_one_regular))
 val Aclonica = FontFamily(Font(R.font.aclonica_regular))
+val GoblinOne = FontFamily(Font(R.font.goblin_one_regular))
 
 // Set of Material typography styles to start with
 val AppTypography = Typography(

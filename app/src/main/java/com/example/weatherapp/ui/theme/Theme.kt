@@ -18,6 +18,8 @@ private val LightColorScheme = lightColorScheme(
     tertiary = Teal80,
     surface = SurfaceLight,
     surfaceVariant = SurfaceVariantLight
+
+
 )
 
 private val DarkColorScheme = darkColorScheme(

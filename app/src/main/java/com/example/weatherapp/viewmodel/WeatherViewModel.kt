@@ -7,14 +7,47 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.network.Constant
+import com.example.weatherapp.network.ForecastModel
 import com.example.weatherapp.network.NetworkResponse
-import com.example.weatherapp.network.RetrofitInstance
 import com.example.weatherapp.network.WeatherModel
+import com.example.weatherapp.repository.WeatherRepository
 import com.example.weatherapp.weatherui.WeatherScreen
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-// Fetches weather data from API using Retrofit
+//
+@HiltViewModel
+ class WeatherViewModel @Inject constructor(
+    private val weatherRepository: WeatherRepository
+): ViewModel() {
 
+
+    private val _weatherResult = MutableLiveData<NetworkResponse<WeatherModel>>()
+    val weatherResult: LiveData<NetworkResponse<WeatherModel>> = _weatherResult
+
+    private val _forecastResult = MutableLiveData<NetworkResponse<ForecastModel>>()
+    val forecastResult: LiveData<NetworkResponse<ForecastModel>> = _forecastResult
+
+
+
+    fun getWeatherData(city: String) {
+        _weatherResult.value = NetworkResponse.Loading
+        viewModelScope.launch {
+            _weatherResult.value = weatherRepository.getWeather(city) // Calls repository
+        }
+    }
+
+    fun getForecastData(city: String) {
+        _forecastResult.value = NetworkResponse.Loading
+        viewModelScope.launch {
+            _forecastResult.value = weatherRepository.getForecast(city)
+        }
+    }
+}
+
+
+/*
 class WeatherViewModel : ViewModel() {
 
     // Instance of api to use in viewModel
@@ -50,7 +83,7 @@ class WeatherViewModel : ViewModel() {
         }
     }
 }
-
+*/
 
 // https://api.weatherapi.com/v1/current.json?key=c6f78186497e4b34ba3164901242612&q=London&aqi=no
 // c6f78186497e4b34ba3164901242612

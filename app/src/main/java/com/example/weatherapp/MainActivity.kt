@@ -19,14 +19,16 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.weatherapp.ui.theme.WeatherAppTheme
 import com.example.weatherapp.viewmodel.WeatherViewModel
 import com.example.weatherapp.weatherui.WeatherScreen
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
         //used to obtain instance of weatherViewModel
-        val weatherViewModel = ViewModelProvider(this)[WeatherViewModel::class.java]
+      //  val weatherViewModel = ViewModelProvider(this)[WeatherViewModel::class.java]
         //viewModelProvider ensure WeatherViewModel instance persists configuration changes
         setContent {
 
@@ -37,7 +39,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
 
                     // pass WeatherViewModel instance to WeatherScreen
-                ) { WeatherScreen(weatherViewModel, modifier = Modifier)
+                ) { WeatherScreen(modifier = Modifier)
                 }
                 /*
                 Scaffold(
