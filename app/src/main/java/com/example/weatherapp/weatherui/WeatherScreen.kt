@@ -144,156 +144,162 @@ fun WeatherScreen(weatherViewModel: WeatherViewModel = hiltViewModel(), modifier
             //  SoftLavender,
             SoftBlue,
             SoftSkyBlye,
-            SoftLavender)
+            SoftLavender
+        )
     )
-         //  DeepRoyalPurple,
+    //  DeepRoyalPurple,
 
-            Box(
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(gradient)
+        //   .background(color = Purple)
+
+    ) {
+
+        Column {
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+
+            OutlinedTextField(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .background(gradient)
-                //   .background(color = Purple)
+                    .height(100.dp)
+                    .fillMaxWidth()
+                    .padding(start = 26.dp, top = 26.dp, end = 26.dp, bottom = 8.dp),
+
+                value = city,
+                onValueChange = { city = it },
+                label = {
+                    Text(
+                        text = "Search for a City",
+                        fontSize = 22.sp,
+
+                        //  color = Color.Black // Ensures label stays black even when focused
+                    )
+                },
+                textStyle = TextStyle(fontSize = 22.sp), // Text of user's input
+                shape = RoundedCornerShape(28.dp),
+                trailingIcon = {
+                    IconButton(
+                        onClick = {
+                            weatherViewModel.getWeatherData(city)
+                            weatherViewModel.getForecastData(city)
+                            keyboardController?.hide()          //Question mark because is nullable
+                        }                          //Hides keyboard when click search
+                    )
+                    {
+                        Icon(
+                            imageVector = Icons.Default.Search,   //does not have weight so only takes space of contents
+                            contentDescription = "Search for City",
+                            modifier = Modifier.size(28.dp),
+                        )
+                    }
+                },
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color.Black,
+                    unfocusedBorderColor = Color.Black,
+                    //   cursorColor = MaterialTheme.colorScheme.,
+                    cursorColor = Color.Black,
+                    focusedContainerColor = MaterialTheme.colorScheme.surface, // Interior background color
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface, // Background when not focused
+                    //     focusedContainerColor = Color.White,
+                    //    focusedPlaceholderColor = MaterialTheme.colorScheme.surface,
+                    //     unfocusedPlaceholderColor = MaterialTheme.colorScheme.surface,
+                    //     focusedPlaceholderColor = Color.Black,  // Placeholder color when focused
+                    //    unfocusedPlaceholderColor = Color.Black, // Placeholder color when not focused
+
+                    focusedLabelColor = Color.Black,
+                    unfocusedLabelColor = Color.Black,
+                ),
+
+                //  unfocusedPlaceholderColor = Color.Cyan
+
+
+                maxLines = 1,
+                singleLine = true
+
+
+            )  // End of OutlinedTextField
+
+
+
+
+            // Main Card
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                RoundedCornerShape(corner = CornerSize(44.dp)),
+                elevation = CardDefaults.cardElevation(defaultElevation = 16.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+                //   colors = CardDefaults.cardColors(containerColor = RichPurple.copy(alpha = 0.6f))
+                //     colors = CardDefaults.cardColors(containerColor = DeepPurple)
 
             ) {
-
-                Column {
-
-                    Spacer(modifier = Modifier.height(24.dp))
-
-                    OutlinedTextField(
-                        modifier = Modifier
-                            .height(120.dp)
-                            .fillMaxWidth()
-                            .padding(26.dp),
-                        value = city,
-                        onValueChange = { city = it },
-                        label = {
-                            Text(
-                                text = "Search for a City",
-                                fontSize = 22.sp,
-
-                              //  color = Color.Black // Ensures label stays black even when focused
-                            )
-                        },
-                        textStyle = TextStyle(fontSize = 22.sp), // Text of user's input
-                        shape = RoundedCornerShape(28.dp),
-                        trailingIcon = {
-                            IconButton(
-                                onClick = {
-                                    weatherViewModel.getWeatherData(city)
-                                    weatherViewModel.getForecastData(city)
-                                    keyboardController?.hide()          //Question mark because is nullable
-                                }                          //Hides keyboard when click search
-                            )
-                            {
-                                Icon(
-                                    imageVector = Icons.Default.Search,   //does not have weight so only takes space of contents
-                                    contentDescription = "Search for City",
-                                    modifier = Modifier.size(28.dp),
-                                )
-                            }
-                        },
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color.Black,
-                            unfocusedBorderColor = Color.Black,
-                         //   cursorColor = MaterialTheme.colorScheme.,
-                            cursorColor = Color.Black,
-                           focusedContainerColor = MaterialTheme.colorScheme.surface, // Interior background color
-                            unfocusedContainerColor = MaterialTheme.colorScheme.surface, // Background when not focused
-                       //     focusedContainerColor = Color.White,
-                        //    focusedPlaceholderColor = MaterialTheme.colorScheme.surface,
-                       //     unfocusedPlaceholderColor = MaterialTheme.colorScheme.surface,
-                       //     focusedPlaceholderColor = Color.Black,  // Placeholder color when focused
-                        //    unfocusedPlaceholderColor = Color.Black, // Placeholder color when not focused
-
-                           focusedLabelColor = Color.Black,
-                            unfocusedLabelColor = Color.Black,
-                        ) ,
-
-                          //  unfocusedPlaceholderColor = Color.Cyan
+                // Current Weather Data Handling
+                when (val resultWeather =
+                    weatherResult.value) { //.value represents the current state of the object
+                    is NetworkResponse.Error -> {
+                        Spacer(modifier = Modifier.height(48.dp))
 
 
-                        maxLines = 1,
-                        singleLine = true
-
-
-                    )  // End of OutlinedTextField
-
-                    // Main Card
-                    Card (
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp),
-                        RoundedCornerShape(corner = CornerSize(44.dp)),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 16.dp),
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
-                     //   colors = CardDefaults.cardColors(containerColor = RichPurple.copy(alpha = 0.6f))
-                        //     colors = CardDefaults.cardColors(containerColor = DeepPurple)
-
-                    ) {
-                        // Current Weather Data Handling
-                        when (val resultWeather =
-                            weatherResult.value) { //.value represents the current state of the object
-                            is NetworkResponse.Error -> {
-                                Spacer(modifier = Modifier.height(48.dp))
-
-
-                                Text(
-                                    text = resultWeather.message,
-                                    fontStyle = FontStyle.Normal,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 36.sp,
-                                    textAlign = TextAlign.Center,
-                                    color = MaterialTheme.colorScheme.tertiary
-                                )
-
-                            }
-
-                            NetworkResponse.Loading -> {
-
-                                Spacer(modifier = Modifier.height(48.dp))
-                                CircularProgressIndicator(color = MaterialTheme.colorScheme.secondary)
-                            }
-
-                            is NetworkResponse.Success -> {
-                                WeatherDetails(data = resultWeather.data)
-
-                                Spacer(Modifier.height(0.dp))
-
-                                WeatherGridDisplay(data = resultWeather.data)
-                            }
-
-                            null -> {}
-                        }
-
-
-                    } // End of 1st Card (location, temp, image)
-
-                    Spacer(Modifier.height(28.dp))
-
-
-                    // Forecast Data Handling
-                    when (val resultForecast =
-                        forecastResult) { //.value represents the current state of the object
-
-                        is NetworkResponse.Error -> {
-                            Text(text = "Error loading forecast data", color = Color.Red)
-                        }
-
-                        NetworkResponse.Loading -> {
-                            CircularProgressIndicator()
-                        }
-
-                        is NetworkResponse.Success -> {
-                            WeatherForecastList(forecastData = resultForecast.data)
-
-                        }
-
-                        null -> {}
+                        Text(
+                            text = resultWeather.message,
+                            fontStyle = FontStyle.Normal,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 36.sp,
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.tertiary
+                        )
 
                     }
-                } // End of Column
-            } // End of Box
+
+                    NetworkResponse.Loading -> {
+
+                        Spacer(modifier = Modifier.height(48.dp))
+                        CircularProgressIndicator(color = MaterialTheme.colorScheme.secondary)
+                    }
+
+                    is NetworkResponse.Success -> {
+                        WeatherDetails(data = resultWeather.data)
+
+                        Spacer(Modifier.height(0.dp))
+
+                        WeatherGridDisplay(data = resultWeather.data)
+                    }
+
+                    null -> {}
+                }
+
+
+            } // End of 1st Card (location, temp, image)
+
+            Spacer(Modifier.height(0.dp))
+
+
+            // Forecast Data Handling
+            when (val resultForecast =
+                forecastResult) { //.value represents the current state of the object
+
+                is NetworkResponse.Error -> {
+
+                }
+
+                NetworkResponse.Loading -> {
+                    CircularProgressIndicator()
+                }
+
+                is NetworkResponse.Success -> {
+                    WeatherForecastList(forecastData = resultForecast.data)
+
+                }
+
+                null -> {}
+
+            }
+        } // End of Column
+    } // End of Box
 } // End of WeatherScreen
 
 // Details in Main Card (City, icon, temp, feels like
@@ -302,238 +308,253 @@ fun WeatherDetails(data: WeatherModel) {
     Spacer(modifier = Modifier.height(8.dp))
 
     Box(
-        modifier = Modifier.size(440.dp) // Adjust size to control overlap
+        modifier = Modifier.size(380.dp) // Adjust size to control overlap
     )
     {
-            // Name of City Display
-            Text(
-                modifier = Modifier
-                    .align(Alignment.TopCenter) // Adjust position
-                    .offset(x = 0.dp, y = 0.dp)
-                    .wrapContentWidth(Alignment.CenterHorizontally), // Ensures proper centering
-                   // .size(200.dp),
-                text = data.location.name.uppercase(),
-                //  text = data.location.name.uppercase() + ", ",
-                fontStyle = FontStyle.Normal,
-                style = TextStyle(
-                    fontFamily = FontFamily(Font(R.font.goblin_one_regular)),
 
-                    //  style = MaterialTheme.typography.titleLarge,
-                    fontSize = 32.sp,
-                    color = Color.White
-                ),
-                maxLines = 1, // Ensures text stays on 1 line
-                overflow = TextOverflow.Visible, // Text will shrink to fit 1 line
-                softWrap = false
-            )
+        // Name of City Display
+        Text(
+            modifier = Modifier
+                .align(Alignment.TopCenter) // Adjust position
+                .offset(x = 0.dp, y = 0.dp)
+                .wrapContentWidth(Alignment.CenterHorizontally), // Ensures proper centering
+            // .size(200.dp),
+            text = data.location.name.uppercase(),
+            //  text = data.location.name.uppercase() + ", ",
+            fontStyle = FontStyle.Normal,
+            style = TextStyle(
+                fontFamily = FontFamily(Font(R.font.goblin_one_regular)),
+
+                //  style = MaterialTheme.typography.titleLarge,
+                fontSize = 32.sp,
+                color = Color.White
+            ),
+            maxLines = 1, // Ensures text stays on 1 line
+            overflow = TextOverflow.Visible, // Text will shrink to fit 1 line
+            softWrap = false
+        )
         Spacer(modifier = Modifier.height(8.dp))
 
-            AsyncImage(
-                modifier = Modifier
-                    .align(Alignment.TopCenter) // Adjust position
-                    .offset(x = (30).dp, y = 40.dp)
-                    .size(250.dp),
-                //  model = "https://cdn.weatherapi.com/weather/64x64/night/248.png",
-                model = "https:${data.current.condition.icon}".replace(
-                    "64x64",
-                    "128x128"
-                ),
-                contentDescription = null
-            )
+        AsyncImage(
+            modifier = Modifier
+                .align(Alignment.TopCenter) // Adjust position
+                .offset(x = (30).dp, y = 40.dp)
+                .size(250.dp),
+            //  model = "https://cdn.weatherapi.com/weather/64x64/night/248.png",
+            model = "https:${data.current.condition.icon}".replace(
+                "64x64",
+                "128x128"
+            ),
+            contentDescription = null
+        )
 
-            Text(
-                text = " ${
-                    data.current.temp_c.toDoubleOrNull()?.roundToInt() ?: "N/A"
-                }° ",
-                //    text = " ${data.current.temp_c} ° c",
-                fontSize = 150.sp,
-                   color = Color.Blue.copy(alpha = 0.70f), // 50% transparency
-                //  color = Color.Cyan.copy(alpha = 0.80f), // 50% transparency
-                //  color =  SoftBlue.copy(alpha = 0.7f),
-                //    color =  PastelPeach.copy(alpha = 0.7f),
-               // color = SoftSkyBlye.copy(alpha = 0.7f),
+        Text(
+            text = " ${
+                data.current.temp_c.toDoubleOrNull()?.roundToInt() ?: "N/A"
+            }° ",
+            //    text = " ${data.current.temp_c} ° c",
+            fontSize = 150.sp,
+            color = Color.Blue.copy(alpha = 0.70f), // 50% transparency
+            //  color = Color.Cyan.copy(alpha = 0.80f), // 50% transparency
+            //  color =  SoftBlue.copy(alpha = 0.7f),
+            //    color =  PastelPeach.copy(alpha = 0.7f),
+            // color = SoftSkyBlye.copy(alpha = 0.7f),
 
-                modifier = Modifier
-                    .align(Alignment.BottomCenter) // Adjust position
-                    .offset(x = -60.dp, y = 0.dp) // Move slightly over icon
-            )
+            modifier = Modifier
+                .align(Alignment.BottomCenter) // Adjust position
+                .offset(x = -60.dp, y = 0.dp) // Move slightly over icon
+        )
 
-            Text(
-                text = "Feels Like: ${data.current.feelslike_c} °C",
-                fontSize = 20.sp,
-                color = Color.White,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter) // Adjust position
-                    .offset(x = (80).dp, y = 0.dp) // Move slightly over icon
-                 //   .padding(top = 8.dp) // Adds spacing below the temp
-            )
+        Text(
+            text = "Feels Like: ${data.current.feelslike_c} °C",
+            fontSize = 20.sp,
+            color = Color.White,
+            modifier = Modifier
+                .align(Alignment.BottomCenter) // Adjust position
+                .offset(x = (80).dp, y = 0.dp) // Move slightly over icon
+            //   .padding(top = 8.dp) // Adds spacing below the temp
+        )
     } // End of Box in WeatherDetails
 } // End of WeatherDetails function
 
 
-    // Card for Humidity, HeatIndex, Wind
-    @Composable
-    fun WeatherGridDisplay(data: WeatherModel) {
-        Card(
+// Card for Humidity, HeatIndex, Wind
+@Composable
+fun WeatherGridDisplay(data: WeatherModel) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(28.dp),
+        shape = RoundedCornerShape(24.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+    ) {
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(28.dp),
-            shape = RoundedCornerShape(24.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            )
-            {
-                WeatherDetailsItem(Icons.Default.WaterDrop,"Humidity", data.current.humidity + "%")
-                VerticalDivider(
-                    color = Color.White, // White vertical line
-                    modifier = Modifier
-                        .height(40.dp)  // Adjust height to match content
-                        .width(1.dp)     // Thin line
-                )
-
-                WeatherDetailsItem(Icons.Default.Thermostat,"Heat Index", data.current.heatindex_c + "°C")
-                VerticalDivider(
-                    color = Color.White, // White vertical line
-                    modifier = Modifier
-                        .height(40.dp)  // Adjust height to match content
-                        .width(1.dp)     // Thin line
-                )
-
-                WeatherDetailsItem(Icons.Default.Air,"Wind", data.current.wind_kph + " km/h")
-             //   WeatherDetailsItem("Precip", data.current.precip_in+ "mm")
-                //   WeatherDetailsCard("Feels Like", data.current.feelslike_c+ " °C")
-
-            }
-
-        }
-    }
-    //
-    @Composable
-    fun WeatherDetailsItem(icon: ImageVector, key: String, value: String) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Icon(
-                imageVector = icon,
-                contentDescription = key,
-                modifier = Modifier.size(24.dp),
-                tint = Color.Gray
-            )
-
-            Text(text = key, style = MaterialTheme.typography.bodyMedium, color = Color.DarkGray)
-            Text(text = value, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold)
-        }
-    }
-
-
-    // Lazy to show the most recent searches.
-    @Composable
-    fun WeatherForecastList(forecastData: ForecastModel) {
-
-        Card(
-            modifier = Modifier
-                .fillMaxWidth() // Ensure Card takes full width
                 .padding(16.dp),
-            shape = RoundedCornerShape(36.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        )
+        {
+            WeatherDetailsItem(Icons.Default.WaterDrop, "Humidity", data.current.humidity + "%")
+            VerticalDivider(
+                color = Color.White, // White vertical line
+                modifier = Modifier
+                    .height(40.dp)  // Adjust height to match content
+                    .width(1.dp)     // Thin line
+            )
+
+            WeatherDetailsItem(
+                Icons.Default.Thermostat,
+                "Heat Index",
+                data.current.heatindex_c + "°C"
+            )
+            VerticalDivider(
+                color = Color.White, // White vertical line
+                modifier = Modifier
+                    .height(40.dp)  // Adjust height to match content
+                    .width(1.dp)     // Thin line
+            )
+
+            WeatherDetailsItem(Icons.Default.Air, "Wind", data.current.wind_kph + " km/h")
+            //   WeatherDetailsItem("Precip", data.current.precip_in+ "mm")
+            //   WeatherDetailsCard("Feels Like", data.current.feelslike_c+ " °C")
+
+        }
+
+    }
+}
+
+//
+@Composable
+fun WeatherDetailsItem(icon: ImageVector, key: String, value: String) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Icon(
+            imageVector = icon,
+            contentDescription = key,
+            modifier = Modifier.size(24.dp),
+            tint = Color.Gray
+        )
+
+        Text(text = key, style = MaterialTheme.typography.bodyMedium, color = Color.DarkGray)
+        Text(text = value, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold)
+    }
+}
 
 
+// Lazy to show the most recent searches.
+@Composable
+fun WeatherForecastList(forecastData: ForecastModel) {
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth() // Ensure Card takes full width
+            .padding(16.dp),
+        shape = RoundedCornerShape(36.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+
+
+    ) {
+
+        Text(
+            text = "3 Day Forecast",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 6.dp),
+            fontSize = 20.sp,
+            color = Color.Blue,
+            textAlign = TextAlign.Center
+        )
+
+        LazyRow(
+            contentPadding = PaddingValues(all = 12.dp),
+            //verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+
+            modifier = Modifier
+                .fillMaxWidth()
         ) {
+            items(forecastData.forecast.forecastday) { day ->
+                WeatherForecast(day) // Pass the ForecastDay object
+            }
+        }
+    }
+} // End of WeatherForecastList Card
+
+// WeatherForecast Details (Date, Avg Temp, Humidity, Wind)
+@Composable
+fun WeatherForecast(day: ForecastDay) {
+    Card(
+        modifier = Modifier
+            .height(180.dp)
+            // .fillMaxWidth(),
+            .width(170.dp),
+
+      //  colors = CardDefaults.cardColors(containerColor = SoftLavender),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+        shape = RoundedCornerShape(26.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
+
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(12.dp),
+         //   verticalArrangement = Arrangement.Center
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            // Display weather condition icon
+            AsyncImage(
+                model = "https:${day.day.condition.icon}",
+                contentDescription = day.day.condition.text,
+                modifier = Modifier.size(64.dp)
+            )
 
 
             Text(
-                text = "3 Day Forecast",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                fontSize = 20.sp,
-                color = Color.Blue,
-                textAlign = TextAlign.Center
+                text = day.date, // Displays Date
+                color = Color.White,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
 
+            Spacer(modifier = Modifier.width(20.dp))
 
-                )
-
-            LazyRow(
-                contentPadding = PaddingValues(all = 12.dp),
-                //verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                items(forecastData.forecast.forecastday) { day ->
-                    WeatherForecast(day) // Pass the ForecastDay object
-                }
-            }
-        }
-    } // End of WeatherForecastList Card
-
-// WeatherForecast Details (Date, Avg Temp, Humidity, Wind)
-    @Composable
-    fun WeatherForecast(day: ForecastDay) {
-        Card(
-            modifier = Modifier
-                .height(180.dp)
-                // .fillMaxWidth(),
-                .width(180.dp)    ,
-
-            colors = CardDefaults.cardColors(containerColor = SoftLavender)
-
-        ) {
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(12.dp),
-                verticalArrangement = Arrangement.Center
+                //    verticalAlignment = Alignment.CenterVertically,
+                //  horizontalArrangement = Arrangement.SpaceBetween,
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxWidth()
             ) {
 
                 Text(
-                    text = day.date, // Displays Date
+                    text = "Avg Temp: ${day.day.avgTempC}°C",
                     color = Color.White,
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.bodyMedium
                 )
 
-                Spacer(modifier = Modifier.width(20.dp))
+                Text(
+                    text = "Humidity: ${day.day.avgHumidity}%",
+                    color = Color.White,
+                    style = MaterialTheme.typography.bodyMedium
+                )
 
-                Column(
-                    //    verticalAlignment = Alignment.CenterVertically,
-                    //  horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
+                Text(
+                    text = "Wind: ${day.day.maxWindKph} kph",
+                    color = Color.White,
+                    style = MaterialTheme.typography.bodyMedium
+                )
 
-                    Text(
-                        text = "Avg Temp: ${day.day.avgTempC}°C",
-                        color = Color.White,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-
-                    Text(
-                        text = "Humidity: ${day.day.avgHumidity}%",
-                        color = Color.White,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-
-                    Text(
-                        text = "Wind: ${day.day.maxWindKph} kph",
-                        color = Color.White,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-
-                }
             }
         }
     }
+}
 
 // End of Code
-
 
 
 /*
@@ -558,22 +579,6 @@ fun WeatherDetails(data: WeatherModel) {
      //     colors = CardDefaults.cardColors(containerColor = SoftSkyBlye)
 
   */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /*
