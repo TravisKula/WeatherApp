@@ -1,6 +1,7 @@
 package com.example.weatherapp.ui.theme
 
 import androidx.compose.material3.Typography
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -28,6 +29,13 @@ val AppTypography = Typography(
         fontSize = 22.sp,
         lineHeight = 28.sp,
         letterSpacing = 0.sp
+    ),
+
+    labelLarge = TextStyle( // Define label style explicitly
+        fontFamily = RacingSansOne, // Or use RacingSansOne if you prefer
+        fontWeight = FontWeight.Normal, // Adjust as needed
+        fontSize = 22.sp, // Match what you want in OutlinedTextField
+        color = Color.Black // Ensures it remains black even when focused
     )
 )
 

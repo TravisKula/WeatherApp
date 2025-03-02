@@ -18,9 +18,9 @@ class WeatherRepository @Inject constructor(private val apiService: WeatherApiSe
                 weatherResponse.body()?.let {
                     return NetworkResponse.Success(it) }
             }
-            NetworkResponse.Error("Failed to load weather data")
+            NetworkResponse.Error("-Failed to Load Weather-")
         } catch (e: Exception) {
-            NetworkResponse.Error("Failed to load weather data")
+            NetworkResponse.Error("-Failed to Load Weather-")
         }
     }
 
