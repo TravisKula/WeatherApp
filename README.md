@@ -1,6 +1,6 @@
 # 🌦️ WeatherApp
 
-### 📌 WeatherApp is a modern Android application built using **Kotlin and Jetpack Compose** to fetch and display real-time weather and forecast data. 
+### WeatherApp is a modern Android application built using **Kotlin and Jetpack Compose** to fetch and display real-time weather and forecast data. 
 It utilizes **Retrofit** for network calls, **Hilt for Dependency Injection**, and follows the **MVVM architecture** for a scalable and maintainable codebase. 
 
 ---
@@ -14,29 +14,29 @@ It utilizes **Retrofit** for network calls, **Hilt for Dependency Injection**, a
 
 ---
 
-### 🛠️ Technologies & Tools Used
+## 🛠️ Technologies & Tools Used
 
-## 📌 **Languages & Frameworks**
+### 📌 **Languages & Frameworks**
 - **Kotlin** – Primary programming language
 - **Jetpack Compose** – Modern UI toolkit for declarative UI
 
-## 📌 **Architecture**
+### 📌 **Architecture**
 - **MVVM (Model-View-ViewModel)** – Ensures separation of concerns
 
-## 📌 **Networking & API Integration**
+### 📌 **Networking & API Integration**
 - **Retrofit** – HTTP client for API calls
 - **Gson** – For JSON parsing
 - **Weather API** – Fetches real-time weather data
 
-## 📌 **Dependency Injection**
+### 📌 **Dependency Injection**
 - **Hilt (Dagger Hilt)** – Manages dependencies efficiently
 
-## 📌 **Asynchronous Programming**
+### 📌 **Asynchronous Programming**
 - **Coroutines & ViewModelScope** – Handles API requests efficiently
 - **LiveData** – Observes and updates UI reactively
 
 
-## 📌 Error Handling & State Management:
+### 📌 Error Handling & State Management:
 - **Sealed Classes** – For handling API responses (Success, Error, Loading)
 - **Try-Catch Blocks** – Ensures graceful error handling
 
@@ -46,7 +46,7 @@ It utilizes **Retrofit** for network calls, **Hilt for Dependency Injection**, a
 
 ![Home Screen](assets/homescreen.png)
 ![Weather Phoenix](assets/weatherphoenix.png)
-![Load Failure](assets/failuretoloaderror.png)
+![Load Failure](assets/failedtoloaderror.png)
 ![Weather Calgary](assets/weathercalgary.png)
 
 ---
