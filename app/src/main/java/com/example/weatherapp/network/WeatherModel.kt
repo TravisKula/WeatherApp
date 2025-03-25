@@ -1,9 +1,8 @@
 package com.example.weatherapp.network
 
-// Model for current weather
+  // Current weather model
   data class WeatherModel(
     val current: Current,
     val location: Location,
-
 )
 
